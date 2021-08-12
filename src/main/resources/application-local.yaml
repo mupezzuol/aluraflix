@@ -1,0 +1,7 @@
+spring:
+  datasource:
+    username: postgres
+    password: root
+  jpa:
+    generate-ddl: true
+    show-sql: true

@@ -10,18 +10,52 @@
 	</parent>
 	<groupId>com.aluraflix</groupId>
 	<artifactId>aluraflix</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>aluraflix</name>
 	<description>Project of Alura Challenge Beck-End.</description>
+
 	<properties>
 		<java.version>11</java.version>
 	</properties>
+
 	<dependencies>
+		<!-- SPRING CORE -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter</artifactId>
+			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
+		<!-- DB -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-core</artifactId>
+		</dependency>
+
+		<!-- UTILS -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- TEST -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -30,6 +64,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>${project.artifactId}-${project.version}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

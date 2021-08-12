@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: @project.artifactId@
+    # DB connection config - db
+  datasource:
+    url: jdbc:postgresql:///aluraflix
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    generate-ddl: false
+    show-sql: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL95Dialect
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    table: flyway_schema_history_aluraflix
+management:
+  server:
+    port: 18080
