@@ -5,3 +5,9 @@ spring:
   jpa:
     generate-ddl: true
     show-sql: true
+springdoc:
+  swagger-ui:
+    path: /swagger-ui-custom.html
+    operationsSorter: method
+  api-docs:
+    path: /aluraflix/v3/api-docs

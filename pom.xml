@@ -16,6 +16,7 @@
 
 	<properties>
 		<java.version>11</java.version>
+		<springdoc.version>1.5.10</springdoc.version>
 	</properties>
 
 	<dependencies>
@@ -53,6 +54,18 @@
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<scope>provided</scope>
+		</dependency>
+
+		<!-- DOCUMENTATION -->
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-webmvc-core</artifactId>
+			<version>${springdoc.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>${springdoc.version}</version>
 		</dependency>
 
 		<!-- TEST -->
