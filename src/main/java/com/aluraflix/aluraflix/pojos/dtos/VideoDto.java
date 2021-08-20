@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 public class VideoDto {
     private Long id;
     private String title;
-    private String desc;
+    private String description;
     private String url;
 }
