@@ -1,4 +1,4 @@
-package com.aluraflix.aluraflix.exception.handler;
+package com.aluraflix.aluraflix.exception.handlers.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ExceptionResponseModel {
+public class ExceptionErrorResponse {
     private int statusCode;
     private String statusName;
     private String message;

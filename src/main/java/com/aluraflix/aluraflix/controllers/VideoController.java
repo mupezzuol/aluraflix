@@ -3,6 +3,7 @@ package com.aluraflix.aluraflix.controllers;
 import com.aluraflix.aluraflix.exception.ListOfVideoNotFoundException;
 import com.aluraflix.aluraflix.exception.VideoNotFoundException;
 import com.aluraflix.aluraflix.pojos.dtos.VideoDto;
+import com.aluraflix.aluraflix.pojos.form.VideoForm;
 import com.aluraflix.aluraflix.services.VideoService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Tag(name = "Video", description = "Video Service API")
@@ -34,6 +36,12 @@ public class VideoController {
     public ResponseEntity<?> deleteVideo(@PathVariable(name = "id") final Long id) throws VideoNotFoundException {
         videoService.deleteVideoById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping
+    public ResponseEntity<VideoDto> createVideo(@RequestBody @Valid final VideoForm videoForm){
+        System.out.println(videoForm);
+        return null;
     }
 
     // TODO: is necessary add create and update endpoint.
