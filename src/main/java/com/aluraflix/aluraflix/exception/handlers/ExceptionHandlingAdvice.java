@@ -5,6 +5,7 @@ import com.aluraflix.aluraflix.exception.VideoAlreadyExistException;
 import com.aluraflix.aluraflix.exception.VideoNotFoundException;
 import com.aluraflix.aluraflix.exception.handlers.model.ExceptionErrorResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -15,6 +16,11 @@ import java.time.LocalDateTime;
 @Slf4j
 @ControllerAdvice
 public class ExceptionHandlingAdvice {
+
+    @ExceptionHandler(InvalidDataAccessApiUsageException.class)
+    public final ResponseEntity<ExceptionErrorResponse> handlerInvalidDataAccessApiUsageException(final InvalidDataAccessApiUsageException ex) {
+        return this.handleError(HttpStatus.BAD_REQUEST, ex);
+    }
 
     @ExceptionHandler(VideoAlreadyExistException.class)
     public final ResponseEntity<ExceptionErrorResponse> handlerVideoAlreadyExistException(final VideoAlreadyExistException ex) {

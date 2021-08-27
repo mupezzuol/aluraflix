@@ -4,15 +4,16 @@ import com.aluraflix.aluraflix.exception.ListOfVideoNotFoundException;
 import com.aluraflix.aluraflix.exception.VideoAlreadyExistException;
 import com.aluraflix.aluraflix.exception.VideoNotFoundException;
 import com.aluraflix.aluraflix.pojos.dtos.VideoDto;
+import com.aluraflix.aluraflix.pojos.form.VideoFormValidation;
 import com.aluraflix.aluraflix.pojos.form.VideoForm;
 import com.aluraflix.aluraflix.services.VideoService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @Tag(name = "Video", description = "Video Service API")
@@ -40,9 +41,13 @@ public class VideoController {
     }
 
     @PostMapping
-    public ResponseEntity<VideoDto> createVideo(@RequestBody @Valid final VideoForm videoForm) throws VideoAlreadyExistException {
+    public ResponseEntity<VideoDto> createVideo(@RequestBody @Validated(VideoFormValidation.CREATE.class) final VideoForm videoForm) throws VideoAlreadyExistException {
         return new ResponseEntity<>(videoService.createVideo(videoForm), HttpStatus.CREATED);
     }
 
-    // TODO: needs to be added updateVideo
+    @PutMapping
+    public ResponseEntity<VideoDto> updateVideo(@RequestBody @Validated(VideoFormValidation.UPDATE.class) final VideoForm videoForm) {
+        return new ResponseEntity<>(videoService.updateVideo(videoForm), HttpStatus.OK);
+    }
+
 }

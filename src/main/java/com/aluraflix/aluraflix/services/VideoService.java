@@ -21,11 +21,6 @@ public class VideoService {
     private final VideoMapper videoMapper;
     private final VideoRepository videoRepository;
 
-    public Video getVideo(final Long id) {
-        return videoRepository.findById(id).orElseThrow(
-                () -> new VideoNotFoundException("Video with id " + id + " not found."));
-    }
-
     public List<VideoDto> getAllVideoDtos() throws ListOfVideoNotFoundException {
         var videos = videoRepository.findAll();
         if (videos.isEmpty()) {
@@ -53,10 +48,29 @@ public class VideoService {
                 .description(videoForm.getDescription())
                 .url(videoForm.getUrl())
                 .build();
+        return saveVideo(video);
+    }
+
+    @Transactional
+    public VideoDto updateVideo(VideoForm videoForm) {
+        Video video = getVideo(videoForm.getId());
+        video.setTitle(videoForm.getTitle());
+        video.setDescription(videoForm.getDescription());
+        video.setUrl(videoForm.getUrl());
+        return saveVideo(video);
+    }
+
+    public Video getVideo(final Long id) {
+        return videoRepository.findById(id).orElseThrow(
+                () -> new VideoNotFoundException("Video with id " + id + " not found."));
+    }
+
+    private VideoDto saveVideo(Video video) {
         return videoMapper.videoToVideoDto(videoRepository.save(video));
     }
 
     private boolean alreadyExistsVideo(String title) {
         return videoRepository.findByTitle(title).isPresent();
     }
+
 }
