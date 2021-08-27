@@ -1,6 +1,7 @@
 package com.aluraflix.aluraflix.exception.handlers;
 
 import com.aluraflix.aluraflix.exception.ListOfVideoNotFoundException;
+import com.aluraflix.aluraflix.exception.VideoAlreadyExistException;
 import com.aluraflix.aluraflix.exception.VideoNotFoundException;
 import com.aluraflix.aluraflix.exception.handlers.model.ExceptionErrorResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +15,11 @@ import java.time.LocalDateTime;
 @Slf4j
 @ControllerAdvice
 public class ExceptionHandlingAdvice {
+
+    @ExceptionHandler(VideoAlreadyExistException.class)
+    public final ResponseEntity<ExceptionErrorResponse> handlerVideoAlreadyExistException(final VideoAlreadyExistException ex) {
+        return this.handleError(HttpStatus.BAD_REQUEST, ex);
+    }
 
     @ExceptionHandler(ListOfVideoNotFoundException.class)
     public final ResponseEntity<ExceptionErrorResponse> handlerListOfVideoNotFoundException(final ListOfVideoNotFoundException ex) {

@@ -1,6 +1,7 @@
 package com.aluraflix.aluraflix.controllers;
 
 import com.aluraflix.aluraflix.exception.ListOfVideoNotFoundException;
+import com.aluraflix.aluraflix.exception.VideoAlreadyExistException;
 import com.aluraflix.aluraflix.exception.VideoNotFoundException;
 import com.aluraflix.aluraflix.pojos.dtos.VideoDto;
 import com.aluraflix.aluraflix.pojos.form.VideoForm;
@@ -39,10 +40,9 @@ public class VideoController {
     }
 
     @PostMapping
-    public ResponseEntity<VideoDto> createVideo(@RequestBody @Valid final VideoForm videoForm){
-        System.out.println(videoForm);
-        return null;
+    public ResponseEntity<VideoDto> createVideo(@RequestBody @Valid final VideoForm videoForm) throws VideoAlreadyExistException {
+        return new ResponseEntity<>(videoService.createVideo(videoForm), HttpStatus.CREATED);
     }
 
-    // TODO: is necessary add create and update endpoint.
+    // TODO: needs to be added updateVideo
 }

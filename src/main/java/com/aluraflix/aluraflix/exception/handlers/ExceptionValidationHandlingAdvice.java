@@ -4,6 +4,9 @@ import com.aluraflix.aluraflix.exception.handlers.model.ExceptionErrorResponse;
 import com.aluraflix.aluraflix.exception.handlers.model.ValidationErrorResponse;
 import com.aluraflix.aluraflix.exception.handlers.model.ViolationError;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.HibernateException;
+import org.postgresql.util.PSQLException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -20,6 +23,25 @@ import java.util.Set;
 @Slf4j
 @ControllerAdvice
 public class ExceptionValidationHandlingAdvice {
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public final ResponseEntity<ValidationErrorResponse> handlerDataIntegrityViolationException(final DataIntegrityViolationException ex) {
+        Set<ViolationError> violationErrorList = new HashSet<>();
+        var hibernateException = (org.hibernate.HibernateException) ex.getCause();
+        var psqlException = (PSQLException) hibernateException.getCause();
+        String message = psqlException.getServerErrorMessage() != null ?
+                psqlException.getServerErrorMessage().getMessage() : "Oops, something with your entity is wrong.";
+        violationErrorList.add(new ViolationError("DataIntegrityViolationException - Contact the development team", message));
+        return this.handleErrorValidation(HttpStatus.BAD_REQUEST, violationErrorList);
+    }
+
+    @ExceptionHandler(HibernateException.class)
+    public final ResponseEntity<ValidationErrorResponse> handlerListOfVideoNotFoundException(final HibernateException ex) {
+        var constraintViolation = (org.hibernate.exception.ConstraintViolationException) ex;
+        Set<ViolationError> violationErrorList = new HashSet<>();
+        violationErrorList.add(new ViolationError(constraintViolation.getConstraintName(), constraintViolation.getSQLException().getMessage()));
+        return this.handleErrorValidation(HttpStatus.BAD_REQUEST, violationErrorList);
+    }
 
     @ExceptionHandler(ConstraintViolationException.class)
     public final ResponseEntity<ValidationErrorResponse> handlerConstraintValidationException(final ConstraintViolationException ex) {
