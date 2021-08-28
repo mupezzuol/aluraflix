@@ -1,4 +1,4 @@
-package com.aluraflix.aluraflix.persistences.repositories;
+package com.aluraflix.aluraflix.persistences;
 
 import com.aluraflix.aluraflix.domain.Video;
 import org.springframework.data.jpa.repository.JpaRepository;
