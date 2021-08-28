@@ -1,5 +1,6 @@
 package com.aluraflix.aluraflix.exception.handlers;
 
+import com.aluraflix.aluraflix.exception.CategoryNotFoundException;
 import com.aluraflix.aluraflix.exception.ListOfVideoNotFoundException;
 import com.aluraflix.aluraflix.exception.VideoAlreadyExistException;
 import com.aluraflix.aluraflix.exception.VideoNotFoundException;
@@ -16,6 +17,11 @@ import java.time.LocalDateTime;
 @Slf4j
 @ControllerAdvice
 public class ExceptionHandlingAdvice {
+
+    @ExceptionHandler(CategoryNotFoundException.class)
+    public final ResponseEntity<ExceptionErrorResponse> handlerCategoryNotFoundException(final CategoryNotFoundException ex) {
+        return this.handleError(HttpStatus.BAD_REQUEST, ex);
+    }
 
     @ExceptionHandler(InvalidDataAccessApiUsageException.class)
     public final ResponseEntity<ExceptionErrorResponse> handlerInvalidDataAccessApiUsageException(final InvalidDataAccessApiUsageException ex) {

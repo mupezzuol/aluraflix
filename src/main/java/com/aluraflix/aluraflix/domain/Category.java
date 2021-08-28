@@ -1,5 +1,6 @@
 package com.aluraflix.aluraflix.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -35,6 +36,7 @@ public class Category {
     @NotEmpty(message = "colour cannot be empty")
     private String colour;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "category", targetEntity = Video.class, cascade = CascadeType.MERGE)
     private List<Video> videos;
 

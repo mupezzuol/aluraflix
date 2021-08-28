@@ -7,10 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class VideoDto {
+public class CategoryDto {
     private Long id;
     private String title;
-    private String description;
-    private String url;
-    private CategoryDto category;
+    private String colour;
 }
