@@ -43,7 +43,7 @@ public class ExceptionHandlingAdvice {
      *
      * @param status Exception generated HttpStatus.
      * @param ex     Throwable class extended.
-     * @return ExceptionResponseModel with the values received through the parameter.
+     * @return ExceptionErrorResponse with the values received through the parameter.
      */
     private ResponseEntity<ExceptionErrorResponse> handleError(final HttpStatus status, final Throwable ex) {
         log.error("Caught {}", ex.getClass().getSimpleName(), ex);
