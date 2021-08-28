@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Tag(name = "Video", description = "Video Service API")
+@Tag(name = "Video Service", description = "Video Service API")
 @RequiredArgsConstructor
 @RequestMapping("/video")
 @RestController

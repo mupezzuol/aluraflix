@@ -1,2 +1,2 @@
-# AluraFlix
-Project of Alura Challenge Beck-End.
+![Aluraflix](src/main/resources/assets/aluraflix-logo.png)
+- Description is coming...
