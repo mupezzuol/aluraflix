@@ -59,6 +59,7 @@ public class VideoService {
         video.setTitle(videoForm.getTitle());
         video.setDescription(videoForm.getDescription());
         video.setUrl(videoForm.getUrl());
+        video.setPublicAccessFree(videoForm.isPublicAccessFree());
         return saveVideo(video);
     }
 
