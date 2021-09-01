@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Tag(name = "Category", description = "Video Service API")
+@Tag(name = "Category", description = "Category Service API")
 @RequiredArgsConstructor
 @RequestMapping("/category")
 @RestController
