@@ -1,8 +1,6 @@
 package com.aluraflix.aluraflix.exception.handlers;
 
-import com.aluraflix.aluraflix.exception.ListOfVideoNotFoundException;
-import com.aluraflix.aluraflix.exception.VideoAlreadyExistException;
-import com.aluraflix.aluraflix.exception.VideoNotFoundException;
+import com.aluraflix.aluraflix.exception.*;
 import com.aluraflix.aluraflix.exception.handlers.model.ExceptionErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
@@ -11,11 +9,37 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 
 @Slf4j
 @ControllerAdvice
 public class ExceptionHandlingAdvice {
+
+    @ExceptionHandler(CategoryAlreadyExistException.class)
+    public final ResponseEntity<ExceptionErrorResponse> handlerCategoryAlreadyExistException(final CategoryAlreadyExistException ex) {
+        return this.handleError(HttpStatus.BAD_REQUEST, ex);
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public final ResponseEntity<ExceptionErrorResponse> handlerEntityNotFoundException(final EntityNotFoundException ex) {
+        return this.handleError(HttpStatus.BAD_REQUEST, ex);
+    }
+
+    @ExceptionHandler(CategoryContainVideosException.class)
+    public final ResponseEntity<ExceptionErrorResponse> handlerCategoryContainVideosException(final CategoryContainVideosException ex) {
+        return this.handleError(HttpStatus.BAD_REQUEST, ex);
+    }
+
+    @ExceptionHandler(ListOfCategoryNotFoundException.class)
+    public final ResponseEntity<ExceptionErrorResponse> handlerListOfCategoryNotFoundException(final ListOfCategoryNotFoundException ex) {
+        return this.handleError(HttpStatus.NOT_FOUND, ex);
+    }
+
+    @ExceptionHandler(CategoryNotFoundException.class)
+    public final ResponseEntity<ExceptionErrorResponse> handlerCategoryNotFoundException(final CategoryNotFoundException ex) {
+        return this.handleError(HttpStatus.BAD_REQUEST, ex);
+    }
 
     @ExceptionHandler(InvalidDataAccessApiUsageException.class)
     public final ResponseEntity<ExceptionErrorResponse> handlerInvalidDataAccessApiUsageException(final InvalidDataAccessApiUsageException ex) {

@@ -1,5 +1,6 @@
 package com.aluraflix.aluraflix.services;
 
+import com.aluraflix.aluraflix.domain.Category;
 import com.aluraflix.aluraflix.domain.Video;
 import com.aluraflix.aluraflix.exception.ListOfVideoNotFoundException;
 import com.aluraflix.aluraflix.exception.VideoAlreadyExistException;
@@ -20,6 +21,7 @@ public class VideoService {
 
     private final VideoMapper videoMapper;
     private final VideoRepository videoRepository;
+    private final CategoryService categoryService;
 
     public List<VideoDto> getAllVideoDtos() throws ListOfVideoNotFoundException {
         var videos = videoRepository.findAll();
@@ -43,17 +45,17 @@ public class VideoService {
         if (alreadyExistsVideo(videoForm.getTitle())) {
             throw new VideoAlreadyExistException("Video with Title '" + videoForm.getTitle() + "' already exists.");
         }
-        var video = Video.builder()
-                .title(videoForm.getTitle())
-                .description(videoForm.getDescription())
-                .url(videoForm.getUrl())
-                .build();
+        Category category = categoryService.getCategory(videoForm.getCategoryId());
+        var video = videoMapper.videoFormToVideo(videoForm);
+        video.setCategory(category);
         return saveVideo(video);
     }
 
     @Transactional
     public VideoDto updateVideo(VideoForm videoForm) {
         Video video = getVideo(videoForm.getId());
+        Category category = categoryService.getCategory(videoForm.getCategoryId());
+        video.setCategory(category);
         video.setTitle(videoForm.getTitle());
         video.setDescription(videoForm.getDescription());
         video.setUrl(videoForm.getUrl());

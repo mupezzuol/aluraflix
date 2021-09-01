@@ -39,9 +39,14 @@ public class Video {
     @NotEmpty(message = "description cannot be empty")
     private String description;
 
+    // TODO: add regex to URL
     @NotNull(message = "url cannot be null")
     @NotEmpty(message = "url cannot be empty")
     private String url;
+
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name="category_id", foreignKey = @ForeignKey(name = "fk_video_category"))
+    private Category category;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
