@@ -16,6 +16,11 @@ import java.time.LocalDateTime;
 @ControllerAdvice
 public class ExceptionHandlingAdvice {
 
+    @ExceptionHandler(CategoryAlreadyExistException.class)
+    public final ResponseEntity<ExceptionErrorResponse> handlerCategoryAlreadyExistException(final CategoryAlreadyExistException ex) {
+        return this.handleError(HttpStatus.BAD_REQUEST, ex);
+    }
+
     @ExceptionHandler(EntityNotFoundException.class)
     public final ResponseEntity<ExceptionErrorResponse> handlerEntityNotFoundException(final EntityNotFoundException ex) {
         return this.handleError(HttpStatus.BAD_REQUEST, ex);
