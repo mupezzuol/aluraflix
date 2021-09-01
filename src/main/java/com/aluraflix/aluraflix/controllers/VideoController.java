@@ -25,6 +25,11 @@ public class VideoController {
 
     private final VideoService videoService;
 
+    @GetMapping("/free")
+    public ResponseEntity<List<VideoDto>> getAllVideoDtosPublicAccessFree() throws ListOfVideoNotFoundException {
+        return ResponseEntity.ok(videoService.getAllVideoDtosPublicAccessFree());
+    }
+
     @GetMapping
     public ResponseEntity<List<VideoDto>> getAllVideoDtos() throws ListOfVideoNotFoundException {
         return ResponseEntity.ok(videoService.getAllVideoDtos());

@@ -23,6 +23,14 @@ public class VideoService {
     private final VideoRepository videoRepository;
     private final CategoryService categoryService;
 
+    public List<VideoDto> getAllVideoDtosPublicAccessFree() {
+        var videos = videoRepository.findAllByPublicAccessFreeTrue();
+        if (videos.isEmpty()) {
+            throw new ListOfVideoNotFoundException("List of videos public access free is empty.");
+        }
+        return videoMapper.videosToVideoDtos(videos);
+    }
+
     public List<VideoDto> getAllVideoDtos() throws ListOfVideoNotFoundException {
         var videos = videoRepository.findAll();
         if (videos.isEmpty()) {
