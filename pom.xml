@@ -20,6 +20,7 @@
 		<springdoc.version>1.5.10</springdoc.version>
 		<lombok.version>1.18.20</lombok.version>
 		<mapstruct.version>1.4.2.Final</mapstruct.version>
+		<hibernate.jpamodelgen.version>5.4.32.Final</hibernate.jpamodelgen.version>
 	</properties>
 
 	<dependencies>
@@ -41,6 +42,11 @@
 		<dependency>
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-jpamodelgen</artifactId>
+			<version>${hibernate.jpamodelgen.version}</version>
 		</dependency>
 
 		<!-- UTILS -->
@@ -113,6 +119,11 @@
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok-mapstruct-binding</artifactId>
 							<version>0.2.0</version>
+						</path>
+						<path>
+							<groupId>org.hibernate</groupId>
+							<artifactId>hibernate-jpamodelgen</artifactId>
+							<version>${hibernate.jpamodelgen.version}</version>
 						</path>
 					</annotationProcessorPaths>
 				</configuration>

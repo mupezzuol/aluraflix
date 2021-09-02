@@ -4,12 +4,14 @@ import com.aluraflix.aluraflix.exception.ListOfVideoNotFoundException;
 import com.aluraflix.aluraflix.exception.VideoAlreadyExistException;
 import com.aluraflix.aluraflix.exception.VideoNotFoundException;
 import com.aluraflix.aluraflix.pojos.dtos.VideoDto;
+import com.aluraflix.aluraflix.pojos.filters.VideoFilter;
 import com.aluraflix.aluraflix.pojos.validations.VideoFormValidation;
 import com.aluraflix.aluraflix.pojos.forms.VideoForm;
 import com.aluraflix.aluraflix.services.VideoService;
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -31,8 +33,15 @@ public class VideoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<VideoDto>> getAllVideoDtos() throws ListOfVideoNotFoundException {
-        return ResponseEntity.ok(videoService.getAllVideoDtos());
+    public ResponseEntity<List<VideoDto>> getAllVideoDtos(@RequestParam(value = "title", required = false) final String title,
+                                                          @RequestParam(value = "description", required = false) final String description,
+                                                          @RequestParam(value = "publicAccessFree", required = false) final boolean publicAccessFree,
+                                                          @RequestParam(value = "categoryTitle", required = false) final String categoryTitle,
+                                                          @RequestParam(value = "pageable", required = false) final Pageable pageable
+                                                          ) throws ListOfVideoNotFoundException {
+
+        var videoFilter = VideoFilter.createFilter(title, description, publicAccessFree, categoryTitle);
+        return ResponseEntity.ok(videoService.getAllVideoDtos(videoFilter, pageable));
     }
 
     @GetMapping("/{id}")

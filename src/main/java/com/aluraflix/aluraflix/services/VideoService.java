@@ -7,13 +7,17 @@ import com.aluraflix.aluraflix.exception.VideoAlreadyExistException;
 import com.aluraflix.aluraflix.exception.VideoNotFoundException;
 import com.aluraflix.aluraflix.persistences.VideoRepository;
 import com.aluraflix.aluraflix.pojos.dtos.VideoDto;
+import com.aluraflix.aluraflix.pojos.filters.VideoFilter;
 import com.aluraflix.aluraflix.pojos.forms.VideoForm;
 import com.aluraflix.aluraflix.pojos.mappers.VideoMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import static com.aluraflix.aluraflix.persistences.specifications.VideoSpecificationBuilder.toSpec;
 
 @RequiredArgsConstructor
 @Service
@@ -31,12 +35,13 @@ public class VideoService {
         return videoMapper.videosToVideoDtos(videos);
     }
 
-    public List<VideoDto> getAllVideoDtos() throws ListOfVideoNotFoundException {
-        var videos = videoRepository.findAll();
+    public List<VideoDto> getAllVideoDtos(final VideoFilter videoFilter, final Pageable pageable) throws ListOfVideoNotFoundException {
+        var videos = videoRepository.findAllByVideoFilter( toSpec(videoFilter), pageable);
         if (videos.isEmpty()) {
             throw new ListOfVideoNotFoundException("List of videos is empty.");
         }
-        return videoMapper.videosToVideoDtos(videos);
+//        return videoMapper.videosToVideoDtos(videos);
+        return null;
     }
 
     public VideoDto getVideoDtoById(Long id) {
