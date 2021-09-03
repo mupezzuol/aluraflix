@@ -11,6 +11,7 @@ import com.aluraflix.aluraflix.pojos.filters.VideoFilter;
 import com.aluraflix.aluraflix.pojos.forms.VideoForm;
 import com.aluraflix.aluraflix.pojos.mappers.VideoMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,13 +36,12 @@ public class VideoService {
         return videoMapper.videosToVideoDtos(videos);
     }
 
-    public List<VideoDto> getAllVideoDtos(final VideoFilter videoFilter, final Pageable pageable) throws ListOfVideoNotFoundException {
+    public Page<VideoDto> getAllVideoDtos(final VideoFilter videoFilter, final Pageable pageable) throws ListOfVideoNotFoundException {
         var videos = videoRepository.findAll(toSpec( videoFilter ), pageable);
         if (videos.isEmpty()) {
             throw new ListOfVideoNotFoundException("List of videos is empty.");
         }
-        // TODO: needs to be added convert to Page
-        return videoMapper.videosToVideoDtos(videos.getContent());
+        return videos.map(videoMapper::videoToVideoDto);
     }
 
     public VideoDto getVideoDtoById(Long id) {

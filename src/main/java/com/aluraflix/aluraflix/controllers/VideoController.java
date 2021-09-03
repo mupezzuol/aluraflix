@@ -11,6 +11,7 @@ import com.aluraflix.aluraflix.services.VideoService;
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -35,11 +36,11 @@ public class VideoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<VideoDto>> getAllVideoDtos(@RequestParam(value = "title", required = false) final String title,
+    public ResponseEntity<Page<VideoDto>> getAllVideoDtos(@RequestParam(value = "title", required = false) final String title,
                                                           @RequestParam(value = "description", required = false) final String description,
                                                           @RequestParam(value = "publicAccessFree", required = false) final boolean publicAccessFree,
                                                           @RequestParam(value = "categoryTitle", required = false) final String categoryTitle,
-        @PageableDefault( size = 5, sort = "title", direction = Sort.Direction.ASC ) final Pageable pageable ) throws ListOfVideoNotFoundException {
+                                                          @PageableDefault( size = 5, sort = "title", direction = Sort.Direction.ASC ) final Pageable pageable ) throws ListOfVideoNotFoundException {
         var videoFilter = VideoFilter.createFilter(title, description, publicAccessFree, categoryTitle);
         return ResponseEntity.ok(videoService.getAllVideoDtos(videoFilter, pageable));
     }
