@@ -36,12 +36,12 @@ public class VideoService {
     }
 
     public List<VideoDto> getAllVideoDtos(final VideoFilter videoFilter, final Pageable pageable) throws ListOfVideoNotFoundException {
-        var videos = videoRepository.findAllByVideoFilter( toSpec(videoFilter), pageable);
+        var videos = videoRepository.findAll(toSpec( videoFilter ), pageable);
         if (videos.isEmpty()) {
             throw new ListOfVideoNotFoundException("List of videos is empty.");
         }
-//        return videoMapper.videosToVideoDtos(videos);
-        return null;
+        // TODO: needs to be added convert to Page
+        return videoMapper.videosToVideoDtos(videos.getContent());
     }
 
     public VideoDto getVideoDtoById(Long id) {
