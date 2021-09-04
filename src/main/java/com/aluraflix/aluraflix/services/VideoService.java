@@ -16,8 +16,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 import static com.aluraflix.aluraflix.persistences.specifications.VideoSpecificationBuilder.toSpec;
 
 @RequiredArgsConstructor
@@ -28,16 +26,16 @@ public class VideoService {
     private final VideoRepository videoRepository;
     private final CategoryService categoryService;
 
-    public List<VideoDto> getAllVideoDtosPublicAccessFree() {
-        var videos = videoRepository.findAllByPublicAccessFreeTrue();
+    public Page<VideoDto> getAllVideoDtosPublicAccessFree(final Pageable pageable) {
+        var videos = videoRepository.findAllByPublicAccessFreeTrue(pageable);
         if (videos.isEmpty()) {
             throw new ListOfVideoNotFoundException("List of videos public access free is empty.");
         }
-        return videoMapper.videosToVideoDtos(videos);
+        return videos.map(videoMapper::videoToVideoDto);
     }
 
     public Page<VideoDto> getAllVideoDtos(final VideoFilter videoFilter, final Pageable pageable) throws ListOfVideoNotFoundException {
-        var videos = videoRepository.findAll(toSpec( videoFilter ), pageable);
+        var videos = videoRepository.findAll(toSpec(videoFilter), pageable);
         if (videos.isEmpty()) {
             throw new ListOfVideoNotFoundException("List of videos is empty.");
         }

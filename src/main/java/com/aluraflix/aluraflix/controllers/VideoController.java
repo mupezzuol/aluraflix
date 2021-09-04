@@ -20,8 +20,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @Tag(name = "Video", description = "Video Service API")
 @RequiredArgsConstructor
 @RequestMapping("/video")
@@ -31,8 +29,8 @@ public class VideoController {
     private final VideoService videoService;
 
     @GetMapping("/free")
-    public ResponseEntity<List<VideoDto>> getAllVideoDtosPublicAccessFree() throws ListOfVideoNotFoundException {
-        return ResponseEntity.ok(videoService.getAllVideoDtosPublicAccessFree());
+    public ResponseEntity<Page<VideoDto>> getAllVideoDtosPublicAccessFree(@PageableDefault(size = 5, sort = "title", direction = Sort.Direction.ASC) final Pageable pageable) throws ListOfVideoNotFoundException {
+        return ResponseEntity.ok(videoService.getAllVideoDtosPublicAccessFree(pageable));
     }
 
     @GetMapping
@@ -40,7 +38,7 @@ public class VideoController {
                                                           @RequestParam(value = "description", required = false) final String description,
                                                           @RequestParam(value = "publicAccessFree", required = false) final boolean publicAccessFree,
                                                           @RequestParam(value = "categoryTitle", required = false) final String categoryTitle,
-                                                          @PageableDefault( size = 5, sort = "title", direction = Sort.Direction.ASC ) final Pageable pageable ) throws ListOfVideoNotFoundException {
+                                                          @PageableDefault(size = 5, sort = "title", direction = Sort.Direction.ASC) final Pageable pageable) throws ListOfVideoNotFoundException {
         var videoFilter = VideoFilter.createFilter(title, description, publicAccessFree, categoryTitle);
         return ResponseEntity.ok(videoService.getAllVideoDtos(videoFilter, pageable));
     }
