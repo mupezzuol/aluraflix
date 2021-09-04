@@ -7,10 +7,10 @@ import com.aluraflix.aluraflix.pojos.dtos.CategoryDto;
 import com.aluraflix.aluraflix.pojos.forms.CategoryForm;
 import com.aluraflix.aluraflix.pojos.mappers.CategoryMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -19,12 +19,12 @@ public class CategoryService {
     private final CategoryMapper categoryMapper;
     private final CategoryRepository categoryRepository;
 
-    public List<CategoryDto> getAllCategoryDtos() {
-        var categories = categoryRepository.findAll();
+    public Page<CategoryDto> getAllCategoryDtos(final Pageable pageable) {
+        var categories = categoryRepository.findAll(pageable);
         if (categories.isEmpty()) {
             throw new ListOfCategoryNotFoundException("List of categories is empty.");
         }
-        return categoryMapper.categoriesToCategoryDtos(categories);
+        return categories.map(categoryMapper::categoryToCategoryDto);
     }
 
     public CategoryDto getCategoryDtoById(Long id) {

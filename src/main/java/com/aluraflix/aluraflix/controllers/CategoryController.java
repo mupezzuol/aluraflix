@@ -7,12 +7,14 @@ import com.aluraflix.aluraflix.services.CategoryService;
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Tag(name = "Category", description = "Category Service API")
 @RequiredArgsConstructor
@@ -23,8 +25,8 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping
-    public ResponseEntity<List<CategoryDto>> getAllCategoryDtos() {
-        return ResponseEntity.ok(categoryService.getAllCategoryDtos());
+    public ResponseEntity<Page<CategoryDto>> getAllCategoryDtos(@PageableDefault(size = 5, sort = "title", direction = Sort.Direction.ASC) final Pageable pageable) {
+        return ResponseEntity.ok(categoryService.getAllCategoryDtos(pageable));
     }
 
     @GetMapping("/{id}")
@@ -35,7 +37,7 @@ public class CategoryController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteCategory(@PathVariable(name = "id") final Long id) {
         categoryService.deleteCategoryById(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping

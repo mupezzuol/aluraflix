@@ -34,4 +34,7 @@ public class VideoForm {
     @NotBlank(message = "url cannot be null or empty", groups = {VideoFormValidation.CREATE.class, VideoFormValidation.UPDATE.class})
     @Size(min = 5, message = "size must be greater than 5 characters", groups = {VideoFormValidation.CREATE.class, VideoFormValidation.UPDATE.class})
     private String url;
+
+    @JsonView({VideoFormValidation.CREATE.class, VideoFormValidation.UPDATE.class})
+    private boolean publicAccessFree;
 }

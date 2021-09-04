@@ -7,13 +7,16 @@ import com.aluraflix.aluraflix.exception.VideoAlreadyExistException;
 import com.aluraflix.aluraflix.exception.VideoNotFoundException;
 import com.aluraflix.aluraflix.persistences.VideoRepository;
 import com.aluraflix.aluraflix.pojos.dtos.VideoDto;
+import com.aluraflix.aluraflix.pojos.filters.VideoFilter;
 import com.aluraflix.aluraflix.pojos.forms.VideoForm;
 import com.aluraflix.aluraflix.pojos.mappers.VideoMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import static com.aluraflix.aluraflix.persistences.specifications.VideoSpecificationBuilder.toSpec;
 
 @RequiredArgsConstructor
 @Service
@@ -23,12 +26,20 @@ public class VideoService {
     private final VideoRepository videoRepository;
     private final CategoryService categoryService;
 
-    public List<VideoDto> getAllVideoDtos() throws ListOfVideoNotFoundException {
-        var videos = videoRepository.findAll();
+    public Page<VideoDto> getAllVideoDtosPublicAccessFree(final Pageable pageable) {
+        var videos = videoRepository.findAllByPublicAccessFreeTrue(pageable);
+        if (videos.isEmpty()) {
+            throw new ListOfVideoNotFoundException("List of videos public access free is empty.");
+        }
+        return videos.map(videoMapper::videoToVideoDto);
+    }
+
+    public Page<VideoDto> getAllVideoDtos(final VideoFilter videoFilter, final Pageable pageable) throws ListOfVideoNotFoundException {
+        var videos = videoRepository.findAll(toSpec(videoFilter), pageable);
         if (videos.isEmpty()) {
             throw new ListOfVideoNotFoundException("List of videos is empty.");
         }
-        return videoMapper.videosToVideoDtos(videos);
+        return videos.map(videoMapper::videoToVideoDto);
     }
 
     public VideoDto getVideoDtoById(Long id) {
@@ -59,6 +70,7 @@ public class VideoService {
         video.setTitle(videoForm.getTitle());
         video.setDescription(videoForm.getDescription());
         video.setUrl(videoForm.getUrl());
+        video.setPublicAccessFree(videoForm.isPublicAccessFree());
         return saveVideo(video);
     }
 

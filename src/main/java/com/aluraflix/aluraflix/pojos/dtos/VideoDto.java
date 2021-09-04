@@ -12,5 +12,6 @@ public class VideoDto {
     private String title;
     private String description;
     private String url;
+    private boolean publicAccessFree;
     private CategoryDto category;
 }
