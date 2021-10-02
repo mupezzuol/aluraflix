@@ -1,7 +1,5 @@
 ![Aluraflix](src/main/resources/assets/aluraflix-logo.png)
-TODO
-- Auth
+# TODO
+- Auth - When finish from Spring Boot
 - Cache
-- Audit
 - Tests
-- Sonarqube

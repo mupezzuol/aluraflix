@@ -12,6 +12,7 @@ import org.hibernate.annotations.Where;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Getter
@@ -24,7 +25,7 @@ import java.time.LocalDateTime;
 @Where(clause = "deleted_at IS NULL")
 @Table(name = "video", indexes = @Index(name = "idx_video_title", columnList = "title", unique = true))
 @Entity(name = "VideoEntity")
-public class Video {
+public class Video implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "videoIdSeq")

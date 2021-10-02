@@ -11,6 +11,7 @@ import com.aluraflix.aluraflix.pojos.filters.VideoFilter;
 import com.aluraflix.aluraflix.pojos.forms.VideoForm;
 import com.aluraflix.aluraflix.pojos.mappers.VideoMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,8 @@ public class VideoService {
     private final VideoRepository videoRepository;
     private final CategoryService categoryService;
 
+
+    @Cacheable(value = "getAllVideoDtosPublicAccessFree")
     public Page<VideoDto> getAllVideoDtosPublicAccessFree(final Pageable pageable) {
         var videos = videoRepository.findAllByPublicAccessFreeTrue(pageable);
         if (videos.isEmpty()) {
@@ -34,6 +37,7 @@ public class VideoService {
         return videos.map(videoMapper::videoToVideoDto);
     }
 
+    @Cacheable(value = "getAllVideoDtos")
     public Page<VideoDto> getAllVideoDtos(final VideoFilter videoFilter, final Pageable pageable) throws ListOfVideoNotFoundException {
         var videos = videoRepository.findAll(toSpec(videoFilter), pageable);
         if (videos.isEmpty()) {
@@ -48,7 +52,7 @@ public class VideoService {
 
     @Transactional
     public void deleteVideoById(Long id) {
-        videoRepository.delete(getVideo(id));
+        videoRepository.deleteById(id);
     }
 
     @Transactional

@@ -8,6 +8,7 @@ import org.hibernate.annotations.Where;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -21,7 +22,7 @@ import java.util.List;
 @Where(clause = "deleted_at IS NULL")
 @Table(name = "category", indexes = @Index(name = "idx_category_title", columnList = "title", unique = true))
 @Entity(name = "CategoryEntity")
-public class Category {
+public class Category implements Serializable  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "categoryIdSeq")
