@@ -11,6 +11,8 @@ import com.aluraflix.aluraflix.pojos.filters.VideoFilter;
 import com.aluraflix.aluraflix.pojos.forms.VideoForm;
 import com.aluraflix.aluraflix.pojos.mappers.VideoMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -46,10 +48,12 @@ public class VideoService {
         return videos.map(videoMapper::videoToVideoDto);
     }
 
+    @Cacheable(value = "videoById", key = "#id")
     public VideoDto getVideoDtoById(Long id) {
         return videoMapper.videoToVideoDto(getVideo(id));
     }
 
+    @CacheEvict(value = "videoById", key = "#id")
     @Transactional
     public void deleteVideoById(Long id) {
         videoRepository.deleteById(id);
@@ -66,6 +70,7 @@ public class VideoService {
         return saveVideo(video);
     }
 
+    @CachePut(value = "videoById", key = "#videoForm.id")
     @Transactional
     public VideoDto updateVideo(VideoForm videoForm) {
         Video video = getVideo(videoForm.getId());

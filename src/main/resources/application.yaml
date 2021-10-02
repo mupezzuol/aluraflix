@@ -38,3 +38,6 @@ cache-properties:
     get-all-video-dtos:
       name: getAllVideoDtos
       duration-in-minutes: 10
+    get-video-dto-by-id:
+      name: videoById
+      duration-in-minutes: 10
