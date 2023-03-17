@@ -15,11 +15,14 @@ import static org.mockito.Mockito.when;
 import com.aluraflix.aluraflix.domain.Video;
 import com.aluraflix.aluraflix.exception.VideoNotFoundException;
 import com.aluraflix.aluraflix.persistences.VideoRepository;
+import com.aluraflix.aluraflix.pojos.dtos.VideoDto;
 import com.aluraflix.aluraflix.pojos.mappers.VideoMapper;
 
 @ExtendWith( MockitoExtension.class )
 class VideoServiceTest
 {
+    public static final long ID = 1L;
+    public static final String DESCRIPTION = "Description Test";
     @Mock
     private VideoMapper videoMapper;
     @Mock
@@ -40,7 +43,7 @@ class VideoServiceTest
     {
         Video video = getMockVideo();
         when( videoRepository.findById( any() ) ).thenReturn( Optional.ofNullable( video ) );
-        Video videoFound = videoService.getVideo( 1L );
+        Video videoFound = videoService.getVideo( ID );
         assertEquals( video.getDescription(), videoFound.getDescription() );
     }
 
@@ -54,11 +57,32 @@ class VideoServiceTest
             .hasMessageContaining( String.format( "Video with id %s not found.", video.getId() ) );
     }
 
+    @Test
+    void testSaveVideo()
+    {
+        Video video = getMockVideo();
+        VideoDto videoDto = getMockVideoDto();
+
+        when( videoMapper.videoToVideoDto( any() ) ).thenReturn( videoDto );
+        when( videoRepository.save( any() ) ).thenReturn( video );
+
+        VideoDto videoDtoFound = videoService.saveVideo( video );
+        assertEquals( video.getDescription(), videoDto.getDescription() );
+    }
+
+    private VideoDto getMockVideoDto()
+    {
+        return VideoDto.builder()
+            .id( ID )
+            .description( DESCRIPTION )
+            .build();
+    }
+
     private Video getMockVideo()
     {
         return Video.builder()
-            .id( 1L )
-            .description( "Description Test" )
+            .id( ID )
+            .description( DESCRIPTION )
             .build();
 
     }

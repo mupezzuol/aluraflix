@@ -79,7 +79,7 @@ public class VideoService {
                 () -> new VideoNotFoundException("Video with id " + id + " not found."));
     }
 
-    private VideoDto saveVideo(Video video) {
+    protected VideoDto saveVideo(Video video) {
         return videoMapper.videoToVideoDto(videoRepository.save(video));
     }
 
